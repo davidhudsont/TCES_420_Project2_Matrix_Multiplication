@@ -7,6 +7,7 @@ int *j;
 
 void *myThread(void *arg){
 	
+}	
 
 int main(int argc) {
 	int core = argc;
