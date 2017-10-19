@@ -1,17 +1,8 @@
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
-#include <pthread.h>
-int *j;
 
-
-void *myThread(void *arg){
-	
-}	
-
-int main(int argc) {
-	int core = argc;
-	
+int main() {
 	clock_t t;
 	
 	srand(time(NULL));
