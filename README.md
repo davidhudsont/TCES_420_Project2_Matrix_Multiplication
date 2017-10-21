@@ -11,3 +11,7 @@ Thank you, I will test it.
 * 16 Thread: time = 29.473454s
 
 No performance increase (on raspberry pi)
+
+In the mythread function computation for loop each thread goes from 0 to SIZE 
+instead it each thread should start at a different indice and calculate the indices
+each thread is responsible for
