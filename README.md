@@ -22,3 +22,10 @@ each thread is responsible for
 * 4 Thread: time = 5s
 * 8 Thread: time = 6s
 * 16 Thread: time = 6s
+
+## Version 0.2 (Davids thread) Speed Results of Matrix size 2000 (Latest version is matrixmult)
+* 1 Thread: time = 332s
+* 2 Thread: time = 167s
+* 4 Thread: time = 89s
+* 8 Thread: time = 97s
+* 16 Thread: time = 97s
