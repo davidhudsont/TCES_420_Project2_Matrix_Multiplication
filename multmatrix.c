@@ -4,7 +4,7 @@
 #include <assert.h>
 #include "mythreads.h"
 #include <time.h>
-#define SIZE 800
+#define SIZE 2000
 int **A;
 int **B;
 int **C;
@@ -86,7 +86,10 @@ for (int rows=0; rows<SIZE; rows++) {
 }
 */
 pthread_t p[16];
-t = time(&timer);
+struct timespec begin, end;
+double elapsed;
+clock_gettime(CLOCK_MONOTONIC, &begin);
+//t = time(&timer);
 printf("Start\n");
 for (int i=0; i<threads; i++) {
 	int index = i;	
@@ -98,8 +101,11 @@ for (int i=0; i<threads; i++) {
 for (int i=0; i<threads; i++) { 
         Pthread_join(p[i],NULL);
 }
-t = time(&timer) - t;
-printf("Operation took: %f\n", t);
+//t = time(&timer) - t;
+clock_gettime(CLOCK_MONOTONIC,&end);
+elapsed = end.tv_sec - begin.tv_sec;
+elapsed += (end.tv_nsec - begin.tv_nsec)/1000000000.0;
+printf("Operation took: %f\n", elapsed);
 /*
 for (int rows=0; rows<SIZE; rows++) {
 	printf("| ");
@@ -108,6 +114,16 @@ for (int rows=0; rows<SIZE; rows++) {
 		}
         printf(" |\n");
 }
+*/
+/*
+for (int i=0; i<SIZE; i++) {
+	free((void*)A[i]);
+	free((void*)B[i]);
+	free((void*)C[i]);
+}
+free((void*)A);
+free((void*)B);
+free((void*)C);
 */
 return 0;
 }
