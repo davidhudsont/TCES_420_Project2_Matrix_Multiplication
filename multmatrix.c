@@ -37,6 +37,8 @@ struct select{
 };
 
 int main(int argc, char *argv[]) {
+time_t timer;
+double t;
 int threads = atoi(argv[1]);
 range = (SIZE/threads)-1;
 printf("threads : %d, range: %d\n",threads,range);
@@ -84,7 +86,7 @@ for (int rows=0; rows<SIZE; rows++) {
 }
 */
 pthread_t p[16];
-clock_t t = clock();
+t = time(&timer);
 printf("Start\n");
 for (int i=0; i<threads; i++) {
 	int index = i;	
@@ -96,8 +98,8 @@ for (int i=0; i<threads; i++) {
 for (int i=0; i<threads; i++) { 
         Pthread_join(p[i],NULL);
 }
-t = clock() - t;
-printf("Operation took: %f\n", ((float)t)/(CLOCKS_PER_SEC));
+t = time(&timer) - t;
+printf("Operation took: %f\n", t);
 /*
 for (int rows=0; rows<SIZE; rows++) {
 	printf("| ");
