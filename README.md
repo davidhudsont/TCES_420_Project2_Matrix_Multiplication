@@ -25,7 +25,7 @@ each thread is responsible for
 
 ## Version 0.2 (Davids thread) Speed Results of Matrix size 2000 (Latest version is matrixmult)
 * 1 Thread: time = 334.577752s
-* 2 Thread: time = 167.481944s
-* 4 Thread: time = 94.933584s
-* 8 Thread: time = 112.481346s
-* 16 Thread: time = 120.071180s
+* 2 Thread: time = 167.481944s (about 2x speed up)
+* 4 Thread: time = 94.933584s  (about 3.5x speed up)
+* 8 Thread: time = 112.481346s (about 3x speed up)
+* 16 Thread: time = 120.071180s (about 2.8x speed up)
