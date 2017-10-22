@@ -15,3 +15,10 @@ No performance increase (on raspberry pi)
 In the mythread function computation for loop each thread goes from 0 to SIZE 
 instead it each thread should start at a different indice and calculate the indices
 each thread is responsible for
+
+## Version 0.2 (Davids thread) Speed Results of Matrix size 500
+* 1 Thread: time = 5.186s
+* 2 Thread: time = 5.209s
+* 4 Thread: time = 5.0682s
+* 8 Thread: time = 5.046316s
+* 16 Thread: time = 5.033778s
