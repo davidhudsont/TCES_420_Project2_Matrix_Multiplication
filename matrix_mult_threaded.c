@@ -112,7 +112,11 @@ int main(int argc, char *argv[]) {
 	/*
 	for (int i=0; i<SIZE; i++) {
 		free((void*)A[i]);
+	}
+	for (int i=0; i<SIZE; i++) {
 		free((void*)B[i]);
+	}
+	for (int i=0; i<SIZE; i++) {
 		free((void*)C[i]);
 	}
 	free((void*)A);
