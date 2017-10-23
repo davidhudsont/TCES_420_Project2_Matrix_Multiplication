@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 	// Create the range each thread calculates
 	for (int i=0; i<threads; i++) {
 		start[i] = count;
-		count += range+1; 
+		count += range; 
 	}
 	// Allocate memory for each matrix
 	A = malloc(SIZE*SIZE*sizeof(int*));
