@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <assert.h>
-#include "mythreads.h"
 #include <time.h>
 
 #define SIZE 2000 // SIZE of the rows and columns of a matrix
@@ -12,6 +11,7 @@ int **C;
 
 int range= 2000;
 int* start; // used to set the start index of each thread
+
 void* mythread(void *arg) {
 	int*  index = (int*)arg;
 	int beg = start[(int)index];
@@ -87,11 +87,13 @@ int main(int argc, char *argv[]) {
 	// Create the threads for Matrix Calculation
 	for (int i=0; i<threads; i++) {
 		int index = i;	
-		Pthread_create(&p[i],NULL,mythread,(void*)index);
+		int rc = pthread_create(&p[i],NULL,mythread,(void*)index);
+		assert(rc == 0);
 	}
 	// Join the threads
 	for (int i=0; i<threads; i++) { 
-		Pthread_join(p[i],NULL);
+		int rc = pthread_join(p[i],NULL);
+		assert(rc == 0);
 	}
 	// End of calculation
 	clock_gettime(CLOCK_MONOTONIC,&end);
