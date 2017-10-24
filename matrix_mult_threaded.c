@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <time.h>
 
-#define SIZE 2000 // SIZE of the rows and columns of a matrix
+#define SIZE 2 // SIZE of the rows and columns of a matrix
 int *A;
 int *B;
 int *C;
@@ -27,7 +27,7 @@ void* mythread(void *arg) {
 		}
 	}
 	printf("beginning : %d, end : %d\n",beg,end);
-	return NULL;
+	pthread_exit(0);
 }
 
 int main(int argc, char *argv[]) {
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 	int threads = atoi(argv[1]);
 	range = (SIZE/threads);
 	printf("threads : %d, range: %d\n",threads,range);
-
+	srand(time(NULL));
 	start = malloc(threads*sizeof(int));
 	int count = 0;
 	// Create the range each thread calculates
@@ -56,25 +56,24 @@ int main(int argc, char *argv[]) {
 	}
 	printf("\n");
 	// Print the matrix A and B
-	/*
+	
 	for (int rows=0; rows<SIZE; rows++) {
 		printf("| ");
 			for (int columns=0; columns<SIZE; columns++) {
-				printf("%d ",  A [rows][columns]);
+				printf("%d ",  A [SIZE*rows+columns]);
 			}
 		printf(" |\n");
 		}
 	printf("\n");
-
 	for (int rows=0; rows<SIZE; rows++) {
 		printf("| ");
 		for (int columns=0; columns<SIZE; columns++) {
-		    printf("%d ",  B [rows][columns]);
+		    printf("%d ",  B [SIZE*rows+columns]);
 		}
 		printf(" |\n");
 	}
-	*/
-	pthread_t p[16]; // create 16 thread variables
+	
+	pthread_t p[threads]; // create 16 thread variables
 	struct timespec begin, end; // create timing 
 	double elapsed;
 	clock_gettime(CLOCK_MONOTONIC, &begin);
@@ -95,18 +94,19 @@ int main(int argc, char *argv[]) {
 	elapsed = end.tv_sec - begin.tv_sec;
 	elapsed += (end.tv_nsec - begin.tv_nsec)/1000000000.0;
 	printf("Operation took: %f\n", elapsed);
-	/*
+	
 	for (int rows=0; rows<SIZE; rows++) {
 		printf("| ");
 			for (int columns=0; columns<SIZE; columns++) {
-				printf("%d ",  C [rows][columns]);
+				printf("%d ",  C [SIZE*rows+columns]);
 			}
 		printf(" |\n");
 	}
-	*/
+	
 	
 	free(A);
 	free(B);
 	free(C);
+	free(start);
 	return 0;
 }
