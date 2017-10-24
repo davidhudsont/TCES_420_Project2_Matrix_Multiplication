@@ -5,9 +5,9 @@
 #include <time.h>
 
 #define SIZE 2000 // SIZE of the rows and columns of a matrix
-int **A;
-int **B;
-int **C;
+int *A;
+int *B;
+int *C;
 
 int range= 2000;
 int* start; // used to set the start index of each thread
@@ -21,9 +21,9 @@ void* mythread(void *arg) {
 		for (int colb=0; colb<SIZE; colb++) {
 			int entry = 0;
 			for (int columns=0; columns<SIZE; columns++) {
-				entry = A[rows][columns]*B[columns][colb]+entry; 
+				entry += A[SIZE*rows+columns]*B[SIZE*columns+colb]; 
 			}
-			C[rows][colb] = entry;
+			C[SIZE*rows+colb] = entry;
 		}
 	}
 	printf("beginning : %d, end : %d\n",beg,end);
@@ -44,19 +44,14 @@ int main(int argc, char *argv[]) {
 		count += range; 
 	}
 	// Allocate memory for each matrix
-	A = malloc(SIZE*SIZE*sizeof(int*));
-	B = malloc(SIZE*SIZE*sizeof(int*));
-	C = malloc(SIZE*SIZE*sizeof(int*));
-	for (int i =0; i<SIZE*SIZE; i++) {
-		A[i] = (int*)malloc(sizeof(int*));
-		B[i] = (int*)malloc(sizeof(int*));
-		C[i] = (int*)malloc(sizeof(int*));
-	}
+	A = malloc(SIZE*SIZE*sizeof(int));
+	B = malloc(SIZE*SIZE*sizeof(int));
+	C = malloc(SIZE*SIZE*sizeof(int));
 	// Create two random matrices A and B
 	for (int rows=0; rows<SIZE; rows++) {
 		for(int columns=0; columns<SIZE; columns++) {
-			A [rows][columns] = abs(rand()%10);
-			B [rows][columns] = abs(rand()%10);
+			A [SIZE*rows+columns] = abs(rand()%10);
+			B [SIZE*rows+columns] = abs(rand()%10);
 		}
 	}
 	printf("\n");
@@ -109,15 +104,9 @@ int main(int argc, char *argv[]) {
 		printf(" |\n");
 	}
 	*/
-	/*
-	for (int i=0; i<SIZE; i++) {
-		free((void*)A[i]);
-		free((void*)B[i]);
-		free((void*)C[i]);
-	}
-	free((void*)A);
-	free((void*)B);
-	free((void*)C);
-	*/
+	
+	free(A);
+	free(B);
+	free(C);
 	return 0;
 }
