@@ -4,10 +4,10 @@
 #include <assert.h>
 #include <time.h>
 
-#define SIZE 2000 // SIZE of the rows and columns of a matrix
-int **A;
-int **B;
-int **C;
+#define SIZE 2 // SIZE of the rows and columns of a matrix
+int *A;
+int *B;
+int *C;
 
 int range= 2000;
 int* start; // used to set the start index of each thread
@@ -21,13 +21,13 @@ void* mythread(void *arg) {
 		for (int colb=0; colb<SIZE; colb++) {
 			int entry = 0;
 			for (int columns=0; columns<SIZE; columns++) {
-				entry = A[rows][columns]*B[columns][colb]+entry; 
+				entry += A[SIZE*rows+columns]*B[SIZE*columns+colb]; 
 			}
-			C[rows][colb] = entry;
+			C[SIZE*rows+colb] = entry;
 		}
 	}
 	printf("beginning : %d, end : %d\n",beg,end);
-	return NULL;
+	pthread_exit(0);
 }
 
 int main(int argc, char *argv[]) {
@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 	int threads = atoi(argv[1]);
 	range = (SIZE/threads);
 	printf("threads : %d, range: %d\n",threads,range);
-
+	srand(time(NULL));
 	start = malloc(threads*sizeof(int));
 	int count = 0;
 	// Create the range each thread calculates
@@ -44,42 +44,36 @@ int main(int argc, char *argv[]) {
 		count += range; 
 	}
 	// Allocate memory for each matrix
-	A = malloc(SIZE*SIZE*sizeof(int*));
-	B = malloc(SIZE*SIZE*sizeof(int*));
-	C = malloc(SIZE*SIZE*sizeof(int*));
-	for (int i =0; i<SIZE*SIZE; i++) {
-		A[i] = (int*)malloc(sizeof(int*));
-		B[i] = (int*)malloc(sizeof(int*));
-		C[i] = (int*)malloc(sizeof(int*));
-	}
+	A = malloc(SIZE*SIZE*sizeof(int));
+	B = malloc(SIZE*SIZE*sizeof(int));
+	C = malloc(SIZE*SIZE*sizeof(int));
 	// Create two random matrices A and B
 	for (int rows=0; rows<SIZE; rows++) {
 		for(int columns=0; columns<SIZE; columns++) {
-			A [rows][columns] = abs(rand()%10);
-			B [rows][columns] = abs(rand()%10);
+			A [SIZE*rows+columns] = abs(rand()%10);
+			B [SIZE*rows+columns] = abs(rand()%10);
 		}
 	}
 	printf("\n");
 	// Print the matrix A and B
-	/*
+	
 	for (int rows=0; rows<SIZE; rows++) {
 		printf("| ");
 			for (int columns=0; columns<SIZE; columns++) {
-				printf("%d ",  A [rows][columns]);
+				printf("%d ",  A [SIZE*rows+columns]);
 			}
 		printf(" |\n");
 		}
 	printf("\n");
-
 	for (int rows=0; rows<SIZE; rows++) {
 		printf("| ");
 		for (int columns=0; columns<SIZE; columns++) {
-		    printf("%d ",  B [rows][columns]);
+		    printf("%d ",  B [SIZE*rows+columns]);
 		}
 		printf(" |\n");
 	}
-	*/
-	pthread_t p[16]; // create 16 thread variables
+	
+	pthread_t p[threads]; // create 16 thread variables
 	struct timespec begin, end; // create timing 
 	double elapsed;
 	clock_gettime(CLOCK_MONOTONIC, &begin);
@@ -100,28 +94,19 @@ int main(int argc, char *argv[]) {
 	elapsed = end.tv_sec - begin.tv_sec;
 	elapsed += (end.tv_nsec - begin.tv_nsec)/1000000000.0;
 	printf("Operation took: %f\n", elapsed);
-	/*
+	
 	for (int rows=0; rows<SIZE; rows++) {
 		printf("| ");
 			for (int columns=0; columns<SIZE; columns++) {
-				printf("%d ",  C [rows][columns]);
+				printf("%d ",  C [SIZE*rows+columns]);
 			}
 		printf(" |\n");
 	}
-	*/
-	/*
-	for (int i=0; i<SIZE; i++) {
-		free((void*)A[i]);
-	}
-	for (int i=0; i<SIZE; i++) {
-		free((void*)B[i]);
-	}
-	for (int i=0; i<SIZE; i++) {
-		free((void*)C[i]);
-	}
-	free((void*)A);
-	free((void*)B);
-	free((void*)C);
-	*/
+	
+	
+	free(A);
+	free(B);
+	free(C);
+	free(start);
 	return 0;
 }
