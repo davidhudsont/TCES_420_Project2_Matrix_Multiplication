@@ -27,6 +27,10 @@ int main() {
 			B[SIZE*rows+columns] = rand()%10;
 		}
 	}
+	/*
+	printMatrix(A,SIZE);
+	printMatrix(B,SIZE);
+	*/
 	struct timespec begin, end; // create timing 
 	double elapsed;
 	clock_gettime(CLOCK_MONOTONIC, &begin);
@@ -44,6 +48,7 @@ int main() {
 	elapsed = end.tv_sec - begin.tv_sec;
 	elapsed += (end.tv_nsec - begin.tv_nsec)/1000000000.0;
 	printf("Operation took: %f\n\n", elapsed);
+	// printMatrix(C,SIZE);
 	free(A);
 	free(B);
 	free(C);
