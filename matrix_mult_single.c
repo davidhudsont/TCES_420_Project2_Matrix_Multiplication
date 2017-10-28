@@ -2,6 +2,17 @@
 #include <time.h>
 #include <stdlib.h>
 
+void printMatrix(int* A, int size) {
+	for (int rows=0; rows<size; rows++) {
+		printf("| ");
+			for (int columns=0; columns<size; columns++) {
+				printf("%d ",  A[size*rows+columns]);
+			}
+		printf(" |\n");
+	}
+	printf("\n");
+}
+
 int main() {
 	srand(time(NULL));
 	int SIZE = 2000;
