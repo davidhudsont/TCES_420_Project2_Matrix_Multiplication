@@ -12,6 +12,17 @@ int *C;
 int range= 2000;
 int* start; // used to set the start index of each thread
 
+void printMatrix(int* A, int size) {
+	for (int rows=0; rows<size; rows++) {
+		printf("| ");
+			for (int columns=0; columns<size; columns++) {
+				printf("%d ",  A[size*rows+columns]);
+			}
+		printf(" |\n");
+	}
+	printf("\n");
+}
+
 void* mythread(void *arg) {
 	int*  index = (int*)arg;
 	int beg = start[(int)index];
@@ -31,7 +42,6 @@ void* mythread(void *arg) {
 }
 
 int main(int argc, char *argv[]) {
-
 	int threads = atoi(argv[1]);
 	range = (SIZE/threads);
 	printf("threads : %d, range: %d, SIZE: %d\n",threads,range,SIZE);
@@ -56,21 +66,8 @@ int main(int argc, char *argv[]) {
 	}
 	// Print the matrix A and B
 	/*
-	for (int rows=0; rows<SIZE; rows++) {
-		printf("| ");
-			for (int columns=0; columns<SIZE; columns++) {
-				printf("%d ",  A [SIZE*rows+columns]);
-			}
-		printf(" |\n");
-		}
-	printf("\n");
-	for (int rows=0; rows<SIZE; rows++) {
-		printf("| ");
-		for (int columns=0; columns<SIZE; columns++) {
-		    printf("%d ",  B [SIZE*rows+columns]);
-		}
-		printf(" |\n");
-	}
+	printMatrix(A,SIZE);
+	printMatrix(B,SIZE);
 	*/
 	pthread_t p[threads]; // create 16 thread variables
 	struct timespec begin, end; // create timing 
@@ -94,13 +91,7 @@ int main(int argc, char *argv[]) {
 	elapsed += (end.tv_nsec - begin.tv_nsec)/1000000000.0;
 	printf("Operation took: %f\n\n", elapsed);
 	/*
-	for (int rows=0; rows<SIZE; rows++) {
-		printf("| ");
-			for (int columns=0; columns<SIZE; columns++) {
-				printf("%d ",  C [SIZE*rows+columns]);
-			}
-		printf(" |\n");
-	}
+	printMatrix(C,SIZE);
 	*/
 	free(A);
 	free(B);
