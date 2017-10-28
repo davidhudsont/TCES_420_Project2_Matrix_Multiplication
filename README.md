@@ -20,3 +20,12 @@
 * 4 Thread: time = 94.933584s  (about 3.5x speed up)
 * 8 Thread: time = 112.481346s (about 3x speed up)
 * 16 Thread: time = 120.071180s (about 2.8x speed up)
+
+## Version 0.3 (Davids thread) Speed Results of Matrix size 2000 (Latest version is matrixmult)
+
+* Multi(1) 556.511877
+* Multi(2) 274.606258
+* Multi(4) 171.252293
+* Multi(8) 254.579507
+* Multi(16) 348.405
+
