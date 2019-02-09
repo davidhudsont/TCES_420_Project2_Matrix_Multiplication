@@ -2,43 +2,67 @@
 #include <time.h>
 #include <stdlib.h>
 
-int main() {
-	clock_t t;
-	
-	srand(time(NULL));
+#define SIZE 2000
 
-	int SIZE = 2000;
-	
-	int **A = (int **)malloc(SIZE * sizeof(int *));
-	int **B = (int **)malloc(SIZE * sizeof(int *));
-	int **C = (int **)malloc(SIZE * sizeof(int *));
-	
-	for (int i=0; i<SIZE; i++) {
-		A[i] = (int *)malloc(SIZE * sizeof(int));
-		B[i] = (int *)malloc(SIZE * sizeof(int));
-		C[i] = (int *)malloc(SIZE * sizeof(int));
-		
+#if SIZE <= 4
+	#define PRINT 1
+#else
+	#define PRINT 0
+#endif
+
+void printMatrix(int* A, int size) {
+	for (int rows=0; rows<size; rows++) {
+		printf("| ");
+			for (int columns=0; columns<size; columns++) {
+				printf("%d ",  A[size*rows+columns]);
+			}
+		printf(" |\n");
 	}
+	printf("\n");
+}
+
+int main() {
+	srand(time(NULL));
+	// Allocate Memory for Large Matrices
+	int *A = malloc(SIZE*SIZE * sizeof(int));
+	int *B = malloc(SIZE*SIZE * sizeof(int));
+	int *C = malloc(SIZE*SIZE * sizeof(int));
+
 	for (int rows=0; rows<SIZE; rows++) {
 		for (int columns=0; columns<SIZE; columns++) {
-			A[rows][columns] = rand()%10;
-			B[rows][columns] = rand()%10;
+			A[SIZE*rows+columns] = rand()%10;
+			B[SIZE*rows+columns] = rand()%10;
 		}
 	}
-	printf("Start\n");
-	t = clock();
+	// Setup for timing the computation
+	struct timespec begin, end;
+	double elapsed;
+	clock_gettime(CLOCK_MONOTONIC, &begin);
+	printf("Start\n"); // Start of Calculation
 	for (int rows=0; rows<SIZE; rows++) {
 		for (int colb=0; colb<SIZE; colb++) {
 			int entry = 0;
 			for (int columns=0; columns<SIZE; columns++) {
-				entry = A[rows][columns]*B[columns][colb]+entry; 
+				entry += A[SIZE*rows+columns]*B[SIZE*columns+colb]; 
 			}
-			C[rows][colb] = entry;
+			C[SIZE*rows+colb] = entry;
 		}
 	}
-	t = clock() - t;
-	printf("Operation took: %f\n", ((float)t)/(CLOCKS_PER_SEC));
 	
+	#if PRINT == 1
+		printMatrix(A,SIZE);
+		printMatrix(B,SIZE);
+		printMatrix(C,SIZE);
+	#endif
+	
+	clock_gettime(CLOCK_MONOTONIC,&end);
+	elapsed = end.tv_sec - begin.tv_sec;
+	elapsed += (end.tv_nsec - begin.tv_nsec)/1000000000.0;
+	printf("Operation took: %f\n\n", elapsed);
+	// printMatrix(C,SIZE);
+	free(A);
+	free(B);
+	free(C);
 	return 0;
 	
 }
