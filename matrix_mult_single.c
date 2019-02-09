@@ -22,6 +22,10 @@ void printMatrix(int* A, int size) {
 }
 
 int main() {
+
+int main() {
+	clock_t t;
+
 	srand(time(NULL));
 	// Allocate Memory for Large Matrices
 	int *A = malloc(SIZE*SIZE * sizeof(int));
