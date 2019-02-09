@@ -2,6 +2,14 @@
 #include <time.h>
 #include <stdlib.h>
 
+#define SIZE 2000
+
+#if SIZE <= 4
+	#define PRINT 1
+#else
+	#define PRINT 0
+#endif
+
 void printMatrix(int* A, int size) {
 	for (int rows=0; rows<size; rows++) {
 		printf("| ");
@@ -15,8 +23,7 @@ void printMatrix(int* A, int size) {
 
 int main() {
 	srand(time(NULL));
-	int SIZE = 2000;
-	
+	// Allocate Memory for Large Matrices
 	int *A = malloc(SIZE*SIZE * sizeof(int));
 	int *B = malloc(SIZE*SIZE * sizeof(int));
 	int *C = malloc(SIZE*SIZE * sizeof(int));
@@ -27,11 +34,8 @@ int main() {
 			B[SIZE*rows+columns] = rand()%10;
 		}
 	}
-	/*
-	printMatrix(A,SIZE);
-	printMatrix(B,SIZE);
-	*/
-	struct timespec begin, end; // create timing 
+	// Setup for timing the computation
+	struct timespec begin, end;
 	double elapsed;
 	clock_gettime(CLOCK_MONOTONIC, &begin);
 	printf("Start\n"); // Start of Calculation
@@ -44,6 +48,13 @@ int main() {
 			C[SIZE*rows+colb] = entry;
 		}
 	}
+	
+	#if PRINT == 1
+		printMatrix(A,SIZE);
+		printMatrix(B,SIZE);
+		printMatrix(C,SIZE);
+	#endif
+	
 	clock_gettime(CLOCK_MONOTONIC,&end);
 	elapsed = end.tv_sec - begin.tv_sec;
 	elapsed += (end.tv_nsec - begin.tv_nsec)/1000000000.0;
